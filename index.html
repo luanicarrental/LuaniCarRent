@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luani Car Rental | Makina me Qira</title>
+  <meta name="description" content="Zbulo makinat e Luani Car Rental dhe dërgo kërkesën tënde për rezervim në Durrës, Shqipëri.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="#" class="logo">LUANI<span>CAR RENTAL</span></a>
+
+    <nav>
+      <a href="#home">Kryefaqja</a>
+      <a href="#cars">Makinat</a>
+      <a href="#booking">Rezervo</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <p class="eyebrow">LËVIZ ME STIL</p>
+      <h1>Udhëtimi yt.<br><span>Rregullat e tua.</span></h1>
+      <p class="hero-text">
+        Zbulo makinën e duhur për udhëtimin tënd
+        me Luani Car Rental.
+      </p>
+      <a href="#cars" class="btn">ZBULO MAKINAT</a>
+    </section>
+
+    <section class="section" id="cars">
+      <p class="eyebrow">KOLEKSIONI YNË</p>
+      <h2>Zgjidh makinën tënde</h2>
+      <p class="section-text">
+        Shiko modelet tona dhe dërgo kërkesën për rezervim.
+      </p>
+
+      <div class="car-grid" id="carGrid"></div>
+    </section>
+
+    <section class="section booking-section" id="booking">
+      <p class="eyebrow">REZERVIM ONLINE</p>
+      <h2>Planifiko udhëtimin</h2>
+      <p class="section-text">
+        Plotëso të dhënat dhe ne do të shqyrtojmë kërkesën tënde.
+      </p>
+
+      <form id="bookingForm">
+        <label for="customerName">Emri i plotë</label>
+        <input id="customerName" name="customerName"
+          type="text" autocomplete="name" required>
+
+        <label for="customerPhone">Numri i telefonit</label>
+        <input id="customerPhone" name="customerPhone"
+          type="tel" autocomplete="tel" required>
+
+        <label for="selectedCar">Zgjidh makinën</label>
+        <select id="selectedCar" name="selectedCar" required>
+          <option value="">Zgjidh një makinë</option>
+        </select>
+
+        <div class="form-row">
+          <div>
+            <label for="pickupDate">Data e marrjes</label>
+            <input id="pickupDate" name="pickupDate"
+              type="date" required>
+          </div>
+
+          <div>
+            <label for="returnDate">Data e kthimit</label>
+            <input id="returnDate" name="returnDate"
+              type="date" required>
+          </div>
+        </div>
+
+        <label for="notes">Shënime (opsionale)</label>
+        <textarea id="notes" name="notes" rows="3"
+          placeholder="Ora e marrjes ose kërkesa të tjera..."></textarea>
+
+        <button class="btn" type="submit">
+          DËRGO KËRKESËN
+        </button>
+
+        <p id="formMessage" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+<section class="booking-check" id="kontrollo-rezervimin">
+  <div class="booking-check-box">
+    <h2>Kontrollo Rezervimin</h2>
+
+    <p>
+      Vendos ID-në e rezervimit dhe numrin e telefonit
+      që përdore gjatë rezervimit.
+    </p>
+
+    <form id="checkBookingForm">
+      <label for="bookingId">ID e rezervimit</label>
+      <input
+        type="text"
+        id="bookingId"
+        placeholder="Shembull: LR-1790976218885"
+        required
+      >
+
+      <label for="bookingPhone">Numri i telefonit</label>
+      <input
+        type="tel"
+        id="bookingPhone"
+        placeholder="06XXXXXXXX"
+        required
+      >
+
+      <button type="submit">
+        Kontrollo Rezervimin
+      </button>
+    </form>
+
+    <div id="bookingResult"></div>
+  </div>
+</section>
+  <footer id="contact">
+    <a href="#" class="logo">LUANI<span>CAR RENTAL</span></a>
+    <p>Makina me qira për udhëtimin tënd.</p>
+    <p>Durrës, Shqipëri</p>
+    <a id="instagramLink" href="#" target="_blank"
+       rel="noopener noreferrer">Na ndiq në Instagram</a>
+    <p class="copyright">
+      © <span id="year"></span> Luani Car Rental
+    </p>
+  </footer>
+  
+<section class="contact-section" id="contact">
+  <h2>Na Kontaktoni</h2>
+  <p>Na kontaktoni për rezervime dhe informacione.</p>
+
+  <div class="contact-buttons">
+
+    <a
+      href="https://wa.me/355686636483"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="contact-btn whatsapp-btn"
+    >
+      WhatsApp
+    </a>
+
+    <a
+      href="luanlela303@gmail.com"
+      class="contact-btn email-btn"
+    >
+      Email
+    </a>
+
+  </div>
+</section>
+  <script src="script.js"></script>
+</body>
+</html>
