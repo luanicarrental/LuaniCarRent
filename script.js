@@ -64,7 +64,7 @@ const cars = [
   {
     id: "car5",
     name: "Golf 6 GTI",
-    price: 4500,
+    price: 3500,
     images: [
       "images/golf6gti (1).jpeg",
       "images/golf6gti (2).jpeg",
