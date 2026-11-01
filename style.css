@@ -527,3 +527,56 @@ footer > a:not(.logo) {
   background-color: #1d4ed8;
   transform: translateY(-3px);
 }
+.delivery-section {
+  margin: 20px 0;
+}
+
+.delivery-section label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #d4af37;
+}
+
+.delivery-section select {
+  width: 100%;
+  padding: 14px;
+  background: #151515;
+  color: #ffffff;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+#deliveryPrice {
+  margin-top: 10px;
+  color: #d4af37;
+  font-weight: bold;
+}
+
+.booking-summary {
+  background: #151515;
+  padding: 20px;
+  border: 1px solid #d4af37;
+  border-radius: 12px;
+  margin: 25px 0;
+}
+
+.booking-summary h3 {
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+
+.booking-summary p {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 10px 0;
+  color: #ffffff;
+}
+
+#summaryTotal {
+  color: #d4af37;
+  font-size: 22px;
+  font-weight: bold;
+}
