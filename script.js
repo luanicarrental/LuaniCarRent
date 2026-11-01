@@ -261,6 +261,10 @@ bookingForm.addEventListener("submit", async (event) => {
     pickup: pickupDate.value,
     returnDate: returnDate.value,
     notes: document.getElementById("notes").value.trim()
+      deliveryLocation: document.getElementById("deliveryLocation").value,
+deliveryPrice: Number(document.getElementById("deliveryPrice").value),
+    pickupTime: document.getElementById("pickupTime").value,
+returnTime: document.getElementById("returnTime").value,
   };
 
   message.textContent = "Duke dërguar rezervimin...";
