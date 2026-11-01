@@ -469,3 +469,85 @@ const deliveryLocations = {
   "Korçë": null,
   "Pogradec": null
 };
+const deliverySelect = document.getElementById("deliveryLocation");
+
+const money = amount =>
+  `${amount.toLocaleString("en-US")} ALL`;
+
+Object.keys(deliveryLocations).forEach(location => {
+  const option = document.createElement("option");
+
+  option.value = location;
+  option.textContent = location;
+
+  deliverySelect.appendChild(option);
+});
+
+function calculateBookingTotal() {
+  const carId = document.getElementById("selectedCar").value;
+  const pickup = document.getElementById("pickupDate").value;
+  const returnDate = document.getElementById("returnDate").value;
+  const location = deliverySelect.value;
+
+  const car = cars.find(item => item.id === carId);
+
+  let days = 0;
+  let rentalPrice = 0;
+
+  if (pickup && returnDate) {
+    const start = new Date(pickup + "T00:00:00");
+    const end = new Date(returnDate + "T00:00:00");
+
+    days = Math.max(
+      0,
+      Math.round((end - start) / 86400000)
+    );
+  }
+
+  if (car && days > 0) {
+    rentalPrice = car.price * days;
+  }
+
+  const deliveryPrice = location
+    ? deliveryLocations[location]
+    : null;
+
+  document.getElementById("summaryCar").textContent =
+    car ? car.name : "-";
+
+  document.getElementById("summaryDays").textContent = days;
+
+  document.getElementById("summaryRental").textContent =
+    money(rentalPrice);
+
+  document.getElementById("summaryDelivery").textContent =
+    deliveryPrice === null
+      ? "Për konfirmim"
+      : money(deliveryPrice);
+
+  document.getElementById("deliveryPrice").textContent =
+    !location
+      ? "Zgjidh një vend për të parë çmimin."
+      : deliveryPrice === null
+        ? "Çmimi i dorëzimit konfirmohet nga kompania."
+        : `Çmimi i dorëzimit: ${money(deliveryPrice)}`;
+
+  document.getElementById("summaryTotal").textContent =
+    car && days > 0 && deliveryPrice !== null
+      ? money(rentalPrice + deliveryPrice)
+      : "Për konfirmim";
+}
+
+[
+  "selectedCar",
+  "pickupDate",
+  "returnDate",
+  "deliveryLocation"
+].forEach(id => {
+  document.getElementById(id).addEventListener(
+    "change",
+    calculateBookingTotal
+  );
+});
+
+calculateBookingTotal();
