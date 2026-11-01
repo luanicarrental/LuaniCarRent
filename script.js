@@ -446,7 +446,6 @@ if (checkBookingForm) {
     }
   });
 }
-
 const deliveryLocations = {
   "Durrës": null,
   "Tiranë": null,
