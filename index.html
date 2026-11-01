@@ -97,7 +97,11 @@
   <p>Ditët e qirasë: <span id="summaryDays">0</span></p>
   <p>Çmimi i qirasë: <span id="summaryRental">0 ALL</span></p>
   <p>Transporti: <span id="summaryDelivery">-</span></p>
-
+  <p><b>Vendi i dorëzimit:</b> ${data.deliveryLocation || "-"}</p>
+<p><b>Çmimi i dorëzimit:</b> ${data.deliveryPrice ?? 0} ALL</p>
+<p><b>Totali:</b> ${data.total ?? "-"} ALL</p>
+<p><b>Ora e marrjes:</b> ${data.pickupTime || "-"}</p>
+<p><b>Ora e dorëzimit:</b> ${data.returnTime || "-"}</p>
   <h3>Totali: <span id="summaryTotal">-</span></h3>
 </div>
         </div>
