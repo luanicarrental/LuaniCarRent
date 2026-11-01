@@ -75,6 +75,26 @@
             <input id="returnDate" name="returnDate"
               type="date" required>
           </div>
+          <div class="delivery-section">
+  <label for="deliveryLocation">Vendi i dorëzimit</label>
+
+  <select id="deliveryLocation" required>
+    <option value="">Zgjidh vendin e dorëzimit</option>
+  </select>
+
+  <p id="deliveryPrice">Zgjidh një vend për të parë çmimin.</p>
+</div>
+
+<div class="booking-summary">
+  <h3>Përmbledhja e rezervimit</h3>
+
+  <p>Makina: <span id="summaryCar">-</span></p>
+  <p>Ditët e qirasë: <span id="summaryDays">0</span></p>
+  <p>Çmimi i qirasë: <span id="summaryRental">0 ALL</span></p>
+  <p>Transporti: <span id="summaryDelivery">-</span></p>
+
+  <h3>Totali: <span id="summaryTotal">-</span></h3>
+</div>
         </div>
 
         <label for="notes">Shënime (opsionale)</label>
