@@ -446,3 +446,25 @@ if (checkBookingForm) {
     }
   });
 }
+const deliveryLocations = {
+  "Durrës": null,
+  "Tiranë": null,
+  "Aeroporti i Tiranës (Rinas)": null,
+  "Kavajë": null,
+  "Krujë": null,
+  "Lezhë": null,
+  "Shkodër": null,
+  "Kukës": null,
+  "Peshkopi": null,
+  "Elbasan": null,
+  "Fier": null,
+  "Lushnjë": null,
+  "Berat": null,
+  "Vlorë": null,
+  "Sarandë": null,
+  "Gjirokastër": null,
+  "Tepelenë": null,
+  "Përmet": null,
+  "Korçë": null,
+  "Pogradec": null
+};
