@@ -255,7 +255,7 @@ bookingForm.addEventListener("submit", async (event) => {
   const phoneInput = document.getElementById("customerPhone");
 
   const reservation = {
-    car: selectedCar.value,
+    car: cars.find(c => c.id === selectedCar.value)?.name || selectedCar.value,
     name: nameInput.value.trim(),
     phone: phoneInput.value.trim(),
     pickup: pickupDate.value,
