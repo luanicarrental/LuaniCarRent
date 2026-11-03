@@ -56,6 +56,9 @@ const cars = [
       "images/car3 (5).jpeg",
       "images/car3 (7).jpeg",
       "images/car3 (6).jpeg"
+       ],
+    details: "2.0 benzine-gaz / Kambio Automatike / Viti-2013"
+  }
       {
     id: "car5",
     name: "Golf 6 GTI",
@@ -67,10 +70,6 @@ const cars = [
       "images/golf6gti (4).jpeg",
       "images/golf6gti (5).jpeg",
       "images/golf6gti (6).jpeg"
-      }
-    ],
-    details: "2.0 benzine-gaz / Kambio Automatike / Viti-2013"
-  }
     ],
     details: "2.0 nafte / Kambio Automatike / Viti-2013"
   }
