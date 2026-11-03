@@ -78,8 +78,8 @@ const cars = [
 const API_URL =
 "https://script.google.com/macros/s/AKfycbyfPceBfaDdvYYl7vBFscYDm082oaZR5t08AmQ4GJ5CCGkaurcy73uqrB1WnPaEdeP3Ag/exec";
 const deliveryPrices = {
-  "Kulle": 0,
-  "Aeroporti i Tiranës (Rinas)": 2500,
+  "Kulle",
+  "Aeroporti i Tiranës (Rinas)",
 };
 
 const carGrid = document.getElementById("carGrid");
