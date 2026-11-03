@@ -67,6 +67,7 @@ const cars = [
       "images/golf6gti (4).jpeg",
       "images/golf6gti (5).jpeg",
       "images/golf6gti (6).jpeg"
+      }
     ],
     details: "2.0 benzine-gaz / Kambio Automatike / Viti-2013"
   }
