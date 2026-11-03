@@ -1,84 +1,18 @@
-const cars = [
-  {
-    id: "car1",
-    name: "Passat CC",
-    price: 3000,
-    images: [
-      "images/passatcc1.jpeg",
-      "images/passatcc2.jpeg",
-      "images/passatcc3.jpeg",
-      "images/passatcc4.jpeg",
-      "images/passatcc5.jpeg",
-      "images/passatcc6.jpeg",
-      "images/passatcc.jpeg"
-    ],
-    details: "2.0 nafte / Kambio Automatike / Viti-2011"
-  },
-  {
-    id: "car2",
-    name: "Ford Fiesta",
-    price: 2500,
-    images: [
-      "images/car1 (2).jpeg",
-      "images/car1 (1).jpeg",
-      "images/car1 (3).jpeg",
-      "images/car1 (4).jpeg",
-      "images/car1 (5).jpeg",
-      "images/car1 (7).jpeg",
-      "images/car1 (6).jpeg"
-    ],
-    details: "1.3 Benzin/Gaz / Kambio Manuale / Viti-2011"
-  },
-  {
-    id: "car3",
-    name: "Mercedes Benz C-Class",
-    price: 3000,
-    images: [
-      "images/car2 (2).jpeg",
-      "images/car2 (1).jpeg",
-      "images/car2 (3).jpeg",
-      "images/car2 (4).jpeg",
-      "images/car2 (5).jpeg",
-      "images/car2 (7).jpeg",
-      "images/car2 (6).jpeg"
-    ],
-    details: "2.0 nafte / Kambio Automatike / Viti-2009"
-  },
-  {
-    id: "car4",
-    name: "Golf 6",
-    price: 3000,
-    images: [
-      "images/car3 (2).jpeg",
-      "images/car3 (1).jpeg",
-      "images/car3 (3).jpeg",
-      "images/car3 (4).jpeg",
-      "images/car3 (5).jpeg",
-      "images/car3 (7).jpeg",
-      "images/car3 (6).jpeg"
-       ],
-    details: "2.0 benzine-gaz / Kambio Automatike / Viti-2013"
-  },
-  {
-    id: "car5",
-    name: "Golf 6 GTI",
-    price: 4500,
-    images: [
-      "images/golf6gti (1).jpeg",
-      "images/golf6gti (2).jpeg",
-      "images/golf6gti (3).jpeg",
-      "images/golf6gti (4).jpeg",
-      "images/golf6gti (5).jpeg",
-      "images/golf6gti (6).jpeg"
-    ],
-    details: "2.0 nafte / Kambio Automatike / Viti-2013"
-  }
-];
+const SPREADSHEET_ID = "1fZTjIFdRsZQg_KjyE5lkzp4a4dp5s_LXl7TTC3jdTXM";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbwtKcXok0e2rK2Q4QAtY5h74cFQ0IjT4F3zQF-rLBykP5Nh2ispX3izQH8Lvv42Nv-Bug/exec";
+const SHEET_NAME = "Sheet1";
 
-const deliveryPrices = {
+const OWNER_EMAIL = "luanlela303@gmail.com";
+
+const CAR_PRICES = {
+  "Passat CC": 3000,
+  "Ford Fiesta": 2500,
+  "Mercedes Benz C-Class": 3000,
+  "Golf 6": 3000,
+  "Golf 6 GTI": 4500
+};
+
+const DELIVERY_PRICES = {
   "Durrës": 0,
   "Tiranë": 2500,
   "Aeroporti i Tiranës (Rinas)": 2500,
@@ -99,371 +33,440 @@ const deliveryPrices = {
   "Kukës": 7000
 };
 
-const carGrid = document.getElementById("carGrid");
-const selectedCar = document.getElementById("selectedCar");
-const bookingForm = document.getElementById("bookingForm");
-const message = document.getElementById("formMessage");
+const HEADERS = [
+  "ID",
+  "Makina",
+  "Emri",
+  "Telefoni",
+  "Marrja",
+  "Kthimi",
+  "Statusi",
+  "Token",
+  "Ora e marrjes",
+  "Ora e kthimit",
+  "Vendi i dorëzimit",
+  "Ditët",
+  "Qiraja ALL",
+  "Transporti ALL",
+  "Totali ALL",
+  "Shënime"
+];
 
-const pickupDate = document.getElementById("pickupDate");
-const returnDate = document.getElementById("returnDate");
-const pickupTime = document.getElementById("pickupTime");
-const returnTime = document.getElementById("returnTime");
-const deliveryLocation = document.getElementById("deliveryLocation");
+function getBook() {
+  return SpreadsheetApp.openById(SPREADSHEET_ID);
+}
 
-const money = amount =>
-  `${Number(amount).toLocaleString("sq-AL")} ALL`;
+function getSheet() {
+  const sheet = getBook().getSheetByName(SHEET_NAME);
 
-cars.forEach(car => {
-  const card = document.createElement("article");
-  card.className = "car-card";
-
-  const gallery = document.createElement("div");
-  gallery.className = "car-gallery";
-
-  let currentImageIndex = 0;
-
-  const image = document.createElement("img");
-  image.src = car.images[0];
-  image.alt = car.name;
-  image.loading = "lazy";
-
-  const previousButton = document.createElement("button");
-  previousButton.type = "button";
-  previousButton.className = "gallery-prev";
-  previousButton.textContent = "❮";
-  previousButton.setAttribute("aria-label", "Fotoja e mëparshme");
-
-  const nextButton = document.createElement("button");
-  nextButton.type = "button";
-  nextButton.className = "gallery-next";
-  nextButton.textContent = "❯";
-  nextButton.setAttribute("aria-label", "Fotoja tjetër");
-
-  const imageCounter = document.createElement("span");
-  imageCounter.className = "gallery-counter";
-
-  function updateImage() {
-    image.src = car.images[currentImageIndex];
-    imageCounter.textContent =
-      `${currentImageIndex + 1} / ${car.images.length}`;
+  if (!sheet) {
+    throw new Error("Fleta Sheet1 nuk u gjet.");
   }
 
-  previousButton.addEventListener("click", () => {
-    currentImageIndex =
-      (currentImageIndex - 1 + car.images.length) % car.images.length;
-    updateImage();
-  });
+  return sheet;
+}
 
-  nextButton.addEventListener("click", () => {
-    currentImageIndex =
-      (currentImageIndex + 1) % car.images.length;
-    updateImage();
-  });
+function getExtraSheet(name) {
+  const book = getBook();
+  let sheet = book.getSheetByName(name);
 
-  updateImage();
+  if (!sheet) {
+    sheet = book.insertSheet(name);
+  }
 
-  gallery.append(
-    image,
-    previousButton,
-    nextButton,
-    imageCounter
+  const headers = HEADERS.filter((_, index) => index !== 7);
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(headers);
+  }
+
+  sheet.setFrozenRows(1);
+
+  return sheet;
+}
+
+function setupSheets() {
+  const sheet = getSheet();
+
+  sheet.getRange(1, 1, 1, HEADERS.length)
+    .setValues([HEADERS]);
+
+  sheet.setFrozenRows(1);
+
+  getExtraSheet("Rezervime_Konfirmuara");
+  getExtraSheet("Rezervime_Anuluara");
+}
+
+function jsonResponse(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function formatDate(value) {
+  if (value instanceof Date && !isNaN(value)) {
+    return Utilities.formatDate(
+      value,
+      Session.getScriptTimeZone(),
+      "yyyy-MM-dd"
+    );
+  }
+
+  return String(value || "");
+}
+
+function normalizePhone(value) {
+  let phone = String(value || "").replace(/\D/g, "");
+
+  if (phone.startsWith("00355")) {
+    phone = phone.slice(5);
+  } else if (phone.startsWith("355")) {
+    phone = phone.slice(3);
+  }
+
+  if (phone.startsWith("0")) {
+    phone = phone.slice(1);
+  }
+
+  return phone;
+}
+
+function parseDateTime(date, time) {
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+    !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)
+  ) {
+    throw new Error("Data ose ora nuk është e vlefshme.");
+  }
+
+  const result = new Date(`${date}T${time}:00`);
+
+  if (
+    isNaN(result.getTime()) ||
+    result.getFullYear() !== Number(date.slice(0, 4)) ||
+    result.getMonth() + 1 !== Number(date.slice(5, 7)) ||
+    result.getDate() !== Number(date.slice(8, 10)) ||
+    result.getHours() !== Number(time.slice(0, 2)) ||
+    result.getMinutes() !== Number(time.slice(3, 5))
+  ) {
+    throw new Error("Data ose ora nuk është e vlefshme.");
+  }
+
+  return result;
+}
+
+function calculateReservation(data) {
+  const carPrice = CAR_PRICES[data.car];
+
+  if (carPrice === undefined) {
+    throw new Error("Makina nuk është e vlefshme.");
+  }
+
+  const deliveryPrice = DELIVERY_PRICES[data.deliveryLocation];
+
+  if (deliveryPrice === undefined) {
+    throw new Error("Vendi i dorëzimit nuk është i vlefshëm.");
+  }
+
+  const start = parseDateTime(
+    data.pickup,
+    data.pickupTime
   );
 
-  const info = document.createElement("div");
-  info.className = "car-info";
+  const finish = parseDateTime(
+    data.returnDate,
+    data.returnTime
+  );
 
-  const title = document.createElement("h3");
-  title.textContent = car.name;
-
-  const details = document.createElement("p");
-  details.textContent = car.details;
-
-  const price = document.createElement("p");
-  price.className = "car-price";
-  price.textContent = `${money(car.price)} / ditë`;
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "btn";
-  button.textContent = "ZGJIDH KËTË MAKINË";
-
-  button.addEventListener("click", () => {
-    selectedCar.value = car.id;
-    selectedCar.dispatchEvent(new Event("change"));
-
-    document.getElementById("booking").scrollIntoView({
-      behavior: "smooth"
-    });
-  });
-
-  info.append(title, details, price, button);
-  card.append(gallery, info);
-  carGrid.appendChild(card);
-
-  const option = document.createElement("option");
-  option.value = car.id;
-  option.textContent = car.name;
-  selectedCar.appendChild(option);
-});
-
-Object.entries(deliveryPrices).forEach(([place, price]) => {
-  const option = document.createElement("option");
-  option.value = place;
-  option.textContent = `${place} — ${money(price)}`;
-  deliveryLocation.appendChild(option);
-});
-
-const now = new Date();
-
-const localToday = [
-  now.getFullYear(),
-  String(now.getMonth() + 1).padStart(2, "0"),
-  String(now.getDate()).padStart(2, "0")
-].join("-");
-
-pickupDate.min = localToday;
-returnDate.min = localToday;
-
-pickupDate.addEventListener("change", () => {
-  returnDate.min = pickupDate.value || localToday;
-
-  if (returnDate.value && returnDate.value < pickupDate.value) {
-    returnDate.value = "";
+  if (finish <= start) {
+    throw new Error(
+      "Data dhe ora e kthimit duhet të jenë pas marrjes."
+    );
   }
-});
 
-function summary() {
-  const car = cars.find(c => c.id === selectedCar.value);
+  if (start.getTime() < Date.now() - 60000) {
+    throw new Error(
+      "Data e marrjes nuk mund të jetë në të kaluarën."
+    );
+  }
 
-  const start =
-    pickupDate.value && pickupTime.value
-      ? new Date(`${pickupDate.value}T${pickupTime.value}`)
-      : null;
+  const days = Math.ceil(
+    (finish.getTime() - start.getTime()) / 86400000
+  );
 
-  const finish =
-    returnDate.value && returnTime.value
-      ? new Date(`${returnDate.value}T${returnTime.value}`)
-      : null;
-
-  const days =
-    start && finish && finish > start
-      ? Math.ceil((finish - start) / 86400000)
-      : 0;
-
-  const rent = days * (car?.price || 0);
-
-  const delivery = deliveryLocation.value
-    ? deliveryPrices[deliveryLocation.value]
-    : 0;
-
-  document.getElementById("summaryCar").textContent =
-    car?.name || "-";
-
-  document.getElementById("summaryDays").textContent = days;
-
-  document.getElementById("summaryRental").textContent =
-    money(rent);
-
-  document.getElementById("summaryDelivery").textContent =
-    money(delivery);
-
-  document.getElementById("summaryTotal").textContent =
-    money(rent + delivery);
-
-  document.getElementById("deliveryPrice").textContent =
-    deliveryLocation.value
-      ? `Transporti: ${money(delivery)}`
-      : "Zgjidh vendin për të parë çmimin.";
+  const rental = days * carPrice;
+  const total = rental + deliveryPrice;
 
   return {
     days,
-    rent,
-    delivery,
-    total: rent + delivery
+    rental,
+    delivery: deliveryPrice,
+    total
   };
 }
 
-[
-  selectedCar,
-  pickupDate,
-  returnDate,
-  pickupTime,
-  returnTime,
-  deliveryLocation
-].forEach(element => {
-  element.addEventListener("change", summary);
-  element.addEventListener("input", summary);
-});
-
-bookingForm.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const totals = summary();
-
-  if (
-    !totals.days ||
-    !selectedCar.value ||
-    !deliveryLocation.value
-  ) {
-    message.textContent =
-      "Kontrollo makinën, vendin, datat dhe orët.";
-    return;
-  }
-
-  const car = cars.find(c => c.id === selectedCar.value);
-
-  const reservation = {
-    car: car.name,
-    name: document.getElementById("customerName").value.trim(),
-    phone: document.getElementById("customerPhone").value.trim(),
-    pickup: pickupDate.value,
-    returnDate: returnDate.value,
-    pickupTime: pickupTime.value,
-    returnTime: returnTime.value,
-    deliveryLocation: deliveryLocation.value,
-    notes: document.getElementById("notes").value.trim()
+function reservationFromRow(row) {
+  return {
+    id: String(row[0] || ""),
+    car: String(row[1] || ""),
+    pickup: formatDate(row[4]),
+    returnDate: formatDate(row[5]),
+    status: String(row[6] || "PENDING"),
+    pickupTime: String(row[8] || ""),
+    returnTime: String(row[9] || ""),
+    deliveryLocation: String(row[10] || ""),
+    total: Number(row[14]) || 0
   };
+}
 
-  const button = bookingForm.querySelector(
-    'button[type="submit"]'
-  );
-
-  button.disabled = true;
-  message.textContent = "Duke dërguar rezervimin...";
-
+function doGet(e) {
   try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify(reservation)
+    const params = e && e.parameter ? e.parameter : {};
+
+    if (params.lookup !== "reservation") {
+      return jsonResponse({
+        success: false,
+        message: "Kërkesë e pavlefshme."
+      });
+    }
+
+    const id = String(params.id || "").trim();
+    const phone = normalizePhone(params.phone);
+
+    if (!id || !phone) {
+      return jsonResponse({
+        success: false,
+        message: "Vendos ID-në dhe numrin e telefonit."
+      });
+    }
+
+    const sheet = getSheet();
+    const rows = sheet.getDataRange().getValues();
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+
+      if (
+        String(row[0]).trim() === id &&
+        normalizePhone(row[3]) === phone
+      ) {
+        return jsonResponse({
+          success: true,
+          reservation: reservationFromRow(row)
+        });
+      }
+    }
+
+    return jsonResponse({
+      success: false,
+      message: "Rezervimi nuk u gjet. Kontrollo të dhënat."
     });
 
-    if (!response.ok) {
-      throw new Error("Gabim gjatë komunikimit me serverin.");
-    }
-
-    const data = await response.json();
-
-    if (data.success) {
-      message.textContent =
-        `Rezervimi u regjistrua! ID: ${data.id}. ` +
-        `Totali: ${money(data.total)}. Ruaje ID-në.`;
-
-      bookingForm.reset();
-      returnDate.min = localToday;
-      summary();
-    } else {
-      message.textContent =
-        data.message || "Rezervimi nuk u krye.";
-    }
   } catch (error) {
-    message.textContent =
-      "Gabim gjatë dërgimit. Kontrollo rezervimin para se ta provosh përsëri.";
-  } finally {
-    button.disabled = false;
+    return jsonResponse({
+      success: false,
+      message: "Gabim gjatë kontrollit të rezervimit."
+    });
   }
-});
+}
 
-const checkBookingForm =
-  document.getElementById("checkBookingForm");
-
-const bookingResult =
-  document.getElementById("bookingResult");
-
-checkBookingForm.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const id = document.getElementById("bookingId").value.trim();
-  const phone = document.getElementById("bookingPhone").value.trim();
-
-  bookingResult.textContent = "Duke kontrolluar...";
+function doPost(e) {
+  const lock = LockService.getScriptLock();
 
   try {
-    const url =
-      API_URL +
-      "?lookup=reservation" +
-      "&id=" + encodeURIComponent(id) +
-      "&phone=" + encodeURIComponent(phone);
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Gabim gjatë komunikimit.");
+    if (!e || !e.postData || !e.postData.contents) {
+      throw new Error("Nuk u dërguan të dhëna.");
     }
 
-    const data = await response.json();
+    const data = JSON.parse(e.postData.contents);
 
-    if (!data.success) {
-      const errorBox = document.createElement("div");
-      errorBox.className = "booking-error";
-      errorBox.textContent =
-        data.message || "Rezervimi nuk u gjet.";
+    const name = String(data.name || "").trim();
+    const phone = String(data.phone || "").trim();
+    const notes = String(data.notes || "").trim();
 
-      bookingResult.replaceChildren(errorBox);
-      return;
+    if (!name || !phone || !normalizePhone(phone)) {
+      throw new Error("Emri ose numri i telefonit mungon.");
     }
 
-    const reservation = data.reservation;
+    if (name.length > 150 || notes.length > 2000) {
+      throw new Error("Të dhënat janë shumë të gjata.");
+    }
 
-    const statusNames = {
-      PENDING: "🟡 Në pritje",
-      CONFIRMED: "✅ Konfirmuar",
-      CANCELLED: "❌ Anuluar"
-    };
+    const totals = calculateReservation(data);
 
-    const card = document.createElement("div");
-    card.className = "reservation-card";
+    lock.waitLock(30000);
 
-    const heading = document.createElement("h3");
-    heading.textContent = "Rezervimi juaj";
-    card.appendChild(heading);
+    const id = "LR-" + Date.now() + "-" +
+      Utilities.getUuid().slice(0, 6).toUpperCase();
 
-    const fields = [
-      ["ID", reservation.id],
-      ["Makina", reservation.car],
-      ["Data e marrjes", reservation.pickup],
-      ["Ora e marrjes", reservation.pickupTime],
-      ["Data e kthimit", reservation.returnDate],
-      ["Ora e kthimit", reservation.returnTime],
-      ["Vendi", reservation.deliveryLocation],
-      [
-        "Totali",
-        reservation.total != null
-          ? money(reservation.total)
-          : "-"
-      ],
-      [
-        "Statusi",
-        statusNames[reservation.status] ||
-        reservation.status ||
-        "-"
-      ]
+    const token = Utilities.getUuid();
+
+    const row = [
+      id,
+      data.car,
+      name,
+      "'" + phone,
+      "'" + data.pickup,
+      "'" + data.returnDate,
+      "PENDING",
+      token,
+      "'" + data.pickupTime,
+      "'" + data.returnTime,
+      data.deliveryLocation,
+      totals.days,
+      totals.rental,
+      totals.delivery,
+      totals.total,
+      notes
     ];
 
-    fields.forEach(([label, value]) => {
-      const p = document.createElement("p");
-      const strong = document.createElement("strong");
+    const sheet = getSheet();
 
-      strong.textContent = `${label}: `;
+    sheet.appendRow(row);
+    SpreadsheetApp.flush();
 
-      p.append(
-        strong,
-        document.createTextNode(String(value ?? "-"))
-      );
+    lock.releaseLock();
 
-      card.appendChild(p);
+    try {
+      sendReservationEmail({
+        id,
+        car: data.car,
+        name,
+        phone,
+        pickup: data.pickup,
+        returnDate: data.returnDate,
+        pickupTime: data.pickupTime,
+        returnTime: data.returnTime,
+        deliveryLocation: data.deliveryLocation,
+        notes,
+        ...totals
+      });
+    } catch (emailError) {
+      console.error("Emaili nuk u dërgua: " + emailError);
+    }
+
+    return jsonResponse({
+      success: true,
+      id,
+      status: "PENDING",
+      total: totals.total,
+      message: "Rezervimi u regjistrua me sukses."
     });
 
-    bookingResult.replaceChildren(card);
-
   } catch (error) {
-    const errorBox = document.createElement("div");
-    errorBox.className = "booking-error";
-    errorBox.textContent =
-      "Ndodhi një gabim gjatë kontrollit të rezervimit.";
+    return jsonResponse({
+      success: false,
+      message: error.message
+    });
 
-    bookingResult.replaceChildren(errorBox);
+  } finally {
+    if (lock.hasLock()) {
+      lock.releaseLock();
+    }
   }
-});
+}
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+function sendReservationEmail(data) {
+  const subject = "Rezervim i ri - " + data.id;
+
+  const body = [
+    "REZERVIM I RI - LUANI CAR RENTAL",
+    "",
+    "ID: " + data.id,
+    "Makina: " + data.car,
+    "Emri: " + data.name,
+    "Telefoni: " + data.phone,
+    "",
+    "Data e marrjes: " + data.pickup,
+    "Ora e marrjes: " + data.pickupTime,
+    "",
+    "Data e kthimit: " + data.returnDate,
+    "Ora e kthimit: " + data.returnTime,
+    "",
+    "Vendi i dorëzimit: " + data.deliveryLocation,
+    "",
+    "Ditët e qirasë: " + data.days,
+    "Çmimi i qirasë: " + data.rental + " ALL",
+    "Transporti: " + data.delivery + " ALL",
+    "TOTALI: " + data.total + " ALL",
+    "",
+    "Shënime: " + (data.notes || "Nuk ka"),
+    "",
+    "Statusi: PENDING"
+  ].join("\n");
+
+  MailApp.sendEmail({
+    to: OWNER_EMAIL,
+    subject,
+    body
+  });
+}
+
+function syncStatusRow(row, status) {
+  const confirmed = getExtraSheet("Rezervime_Konfirmuara");
+  const cancelled = getExtraSheet("Rezervime_Anuluara");
+
+  const target =
+    status === "CONFIRMED" ? confirmed : cancelled;
+
+  const values = row.filter((_, index) => index !== 7);
+
+  [confirmed, cancelled].forEach(sheet => {
+    const rows = sheet.getDataRange().getValues();
+
+    for (let i = rows.length - 1; i >= 1; i--) {
+      if (String(rows[i][0]) === String(row[0])) {
+        sheet.deleteRow(i + 1);
+      }
+    }
+  });
+
+  target.appendRow(values);
+}
+
+function updateReservationStatus(id, newStatus) {
+  const allowed = ["PENDING", "CONFIRMED", "CANCELLED"];
+
+  if (!allowed.includes(newStatus)) {
+    throw new Error("Status i pavlefshëm.");
+  }
+
+  const sheet = getSheet();
+  const rows = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(id)) {
+      sheet.getRange(i + 1, 7).setValue(newStatus);
+
+      const updated = sheet.getRange(
+        i + 1,
+        1,
+        1,
+        HEADERS.length
+      ).getValues()[0];
+
+      if (
+        newStatus === "CONFIRMED" ||
+        newStatus === "CANCELLED"
+      ) {
+        syncStatusRow(updated, newStatus);
+      } else {
+        ["Rezervime_Konfirmuara", "Rezervime_Anuluara"]
+          .forEach(name => {
+            const extra = getExtraSheet(name);
+            const values = extra.getDataRange().getValues();
+
+            for (let j = values.length - 1; j >= 1; j--) {
+              if (String(values[j][0]) === String(id)) {
+                extra.deleteRow(j + 1);
+              }
+            }
+          });
+      }
+
+      return "Statusi u përditësua: " + newStatus;
+    }
+  }
+
+  throw new Error("Rezervimi nuk u gjet.");
+}
