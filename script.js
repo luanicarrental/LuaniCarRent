@@ -78,24 +78,8 @@ const cars = [
 const API_URL =
 "https://script.google.com/macros/s/AKfycbyfPceBfaDdvYYl7vBFscYDm082oaZR5t08AmQ4GJ5CCGkaurcy73uqrB1WnPaEdeP3Ag/exec";
 const deliveryPrices = {
-  "Durrës": 0,
-  "Tiranë": 2500,
+  "Kulle": 0,
   "Aeroporti i Tiranës (Rinas)": 2500,
-  "Kavajë": 1500,
-  "Shijak": 1000,
-  "Krujë": 2500,
-  "Lezhë": 3500,
-  "Shkodër": 5000,
-  "Elbasan": 3500,
-  "Fier": 4500,
-  "Lushnjë": 3500,
-  "Berat": 5000,
-  "Vlorë": 6500,
-  "Korçë": 7500,
-  "Pogradec": 6500,
-  "Gjirokastër": 8500,
-  "Sarandë": 10000,
-  "Kukës": 7000
 };
 
 const carGrid = document.getElementById("carGrid");
