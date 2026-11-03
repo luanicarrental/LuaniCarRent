@@ -78,7 +78,7 @@ const cars = [
 const API_URL =
 "https://script.google.com/macros/s/AKfycbyfPceBfaDdvYYl7vBFscYDm082oaZR5t08AmQ4GJ5CCGkaurcy73uqrB1WnPaEdeP3Ag/exec";
 const deliveryPrices = {
-  "Kulle": 0,
+  "Durrës": 0,
   "Aeroporti i Tiranës (Rinas)": 0,
 };
 
@@ -94,7 +94,7 @@ const returnTime = document.getElementById("returnTime");
 const deliveryLocation = document.getElementById("deliveryLocation");
 
 const money = amount =>
-  ${Number(amount).toLocaleString("sq-AL")} ALL;
+  `${Number(amount).toLocaleString("sq-AL")} ALL`;
 
 cars.forEach(car => {
   const card = document.createElement("article");
