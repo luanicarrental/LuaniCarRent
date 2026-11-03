@@ -79,7 +79,7 @@ const API_URL =
 "https://script.google.com/macros/s/AKfycbyfPceBfaDdvYYl7vBFscYDm082oaZR5t08AmQ4GJ5CCGkaurcy73uqrB1WnPaEdeP3Ag/exec";
 const deliveryPrices = {
   "Kulle",
-  "Aeroporti i Tiranës (Rinas)",
+  "Aeroporti i Tiranës (Rinas)": 0,
 };
 
 const carGrid = document.getElementById("carGrid");
