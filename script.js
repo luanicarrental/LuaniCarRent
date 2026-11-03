@@ -56,6 +56,20 @@ const cars = [
       "images/car3 (5).jpeg",
       "images/car3 (7).jpeg",
       "images/car3 (6).jpeg"
+      {
+    id: "car5",
+    name: "Golf 6 GTI",
+    price: 4500,
+    images: [
+      "images/golf6gti (1).jpeg",
+      "images/golf6gti (2).jpeg",
+      "images/golf6gti (3).jpeg",
+      "images/golf6gti (4).jpeg",
+      "images/golf6gti (5).jpeg",
+      "images/golf6gti (6).jpeg"
+    ],
+    details: "2.0 benzine-gaz / Kambio Automatike / Viti-2013"
+  }
     ],
     details: "2.0 nafte / Kambio Automatike / Viti-2013"
   }
