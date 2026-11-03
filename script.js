@@ -93,6 +93,9 @@ const pickupTime = document.getElementById("pickupTime");
 const returnTime = document.getElementById("returnTime");
 const deliveryLocation = document.getElementById("deliveryLocation");
 
+const money = amount =>
+  ${Number(amount).toLocaleString("sq-AL")} ALL;
+
 cars.forEach(car => {
   const card = document.createElement("article");
   card.className = "car-card";
