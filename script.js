@@ -1,4 +1,3 @@
-
 const cars = [
   {
     id: "car1",
@@ -26,7 +25,7 @@ const cars = [
       "images/car1 (4).jpeg",
       "images/car1 (5).jpeg",
       "images/car1 (7).jpeg",
-      "images/car1 (6).jpeg",
+      "images/car1 (6).jpeg"
     ],
     details: "1.3 Benzin/Gaz / Kambio Manuale / Viti-2011"
   },
@@ -35,75 +34,84 @@ const cars = [
     name: "Mercedes Benz C-Class",
     price: 3000,
     images: [
-     "images/car2 (2).jpeg",
+      "images/car2 (2).jpeg",
       "images/car2 (1).jpeg",
       "images/car2 (3).jpeg",
       "images/car2 (4).jpeg",
       "images/car2 (5).jpeg",
       "images/car2 (7).jpeg",
-      "images/car2 (6).jpeg",
+      "images/car2 (6).jpeg"
     ],
-    details: "2.0 nafte / Kambio Automatike / Viti-2009"   
+    details: "2.0 nafte / Kambio Automatike / Viti-2009"
   },
   {
     id: "car4",
     name: "Golf 6",
     price: 3000,
     images: [
-     "images/car3 (2).jpeg",
+      "images/car3 (2).jpeg",
       "images/car3 (1).jpeg",
       "images/car3 (3).jpeg",
       "images/car3 (4).jpeg",
       "images/car3 (5).jpeg",
       "images/car3 (7).jpeg",
-      "images/car3 (6).jpeg",
+      "images/car3 (6).jpeg"
     ],
     details: "2.0 nafte / Kambio Automatike / Viti-2013"
-    
-  },
-  {
-    id: "car5",
-    name: "Golf 6 GTI",
-    price: 3500,
-    images: [
-      "images/golf6gti (1).jpeg",
-      "images/golf6gti (2).jpeg",
-      "images/golf6gti (3).jpeg",
-      "images/golf6gti (4).jpeg",
-      "images/golf6gti (5).jpeg",
-      "images/golf6gti (6).jpeg"
-    ],
-    details: "2.0 benzine-gaz / Kambio Automatike / Viti-2013"
   }
 ];
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwtKcXok0e2rK2Q4QAtY5h74cFQ0IjT4F3zQF-rLBykP5Nh2ispX3izQH8Lvv42Nv-Bug/exec";
+
+const deliveryPrices = {
+  "Durrës": 0,
+  "Tiranë": 2500,
+  "Aeroporti i Tiranës (Rinas)": 2500,
+  "Kavajë": 1500,
+  "Shijak": 1000,
+  "Krujë": 2500,
+  "Lezhë": 3500,
+  "Shkodër": 5000,
+  "Elbasan": 3500,
+  "Fier": 4500,
+  "Lushnjë": 3500,
+  "Berat": 5000,
+  "Vlorë": 6500,
+  "Korçë": 7500,
+  "Pogradec": 6500,
+  "Gjirokastër": 8500,
+  "Sarandë": 10000,
+  "Kukës": 7000
+};
 
 const carGrid = document.getElementById("carGrid");
 const selectedCar = document.getElementById("selectedCar");
 const bookingForm = document.getElementById("bookingForm");
 const message = document.getElementById("formMessage");
+
 const pickupDate = document.getElementById("pickupDate");
 const returnDate = document.getElementById("returnDate");
+const pickupTime = document.getElementById("pickupTime");
+const returnTime = document.getElementById("returnTime");
+const deliveryLocation = document.getElementById("deliveryLocation");
 
-// Krijojmë kartat e makinave
-cars.forEach((car) => {
+const money = amount =>
+  `${Number(amount).toLocaleString("sq-AL")} ALL`;
+
+cars.forEach(car => {
   const card = document.createElement("article");
   card.className = "car-card";
 
-  // Galeria e fotove
   const gallery = document.createElement("div");
   gallery.className = "car-gallery";
-  gallery.style.position = "relative";
 
   let currentImageIndex = 0;
 
   const image = document.createElement("img");
-  image.src = car.images[currentImageIndex];
+  image.src = car.images[0];
   image.alt = car.name;
   image.loading = "lazy";
-
-  image.onerror = () => {
-    image.alt = "Fotografia e makinës nuk u gjet";
-  };
 
   const previousButton = document.createElement("button");
   previousButton.type = "button";
@@ -140,7 +148,12 @@ cars.forEach((car) => {
 
   updateImage();
 
-  gallery.append(image, previousButton, nextButton, imageCounter);
+  gallery.append(
+    image,
+    previousButton,
+    nextButton,
+    imageCounter
+  );
 
   const info = document.createElement("div");
   info.className = "car-info";
@@ -153,10 +166,7 @@ cars.forEach((car) => {
 
   const price = document.createElement("p");
   price.className = "car-price";
-  price.textContent =
-    car.price > 0
-      ? `${car.price} ALL / ditë`
-      : "Çmimi sipas ofertës";
+  price.textContent = `${money(car.price)} / ditë`;
 
   const button = document.createElement("button");
   button.type = "button";
@@ -165,6 +175,8 @@ cars.forEach((car) => {
 
   button.addEventListener("click", () => {
     selectedCar.value = car.id;
+    selectedCar.dispatchEvent(new Event("change"));
+
     document.getElementById("booking").scrollIntoView({
       behavior: "smooth"
     });
@@ -180,12 +192,19 @@ cars.forEach((car) => {
   selectedCar.appendChild(option);
 });
 
-// Vendosim datën minimale: sot
-const today = new Date();
+Object.entries(deliveryPrices).forEach(([place, price]) => {
+  const option = document.createElement("option");
+  option.value = place;
+  option.textContent = `${place} — ${money(price)}`;
+  deliveryLocation.appendChild(option);
+});
+
+const now = new Date();
+
 const localToday = [
-  today.getFullYear(),
-  String(today.getMonth() + 1).padStart(2, "0"),
-  String(today.getDate()).padStart(2, "0")
+  now.getFullYear(),
+  String(now.getMonth() + 1).padStart(2, "0"),
+  String(now.getDate()).padStart(2, "0")
 ].join("-");
 
 pickupDate.min = localToday;
@@ -194,79 +213,108 @@ returnDate.min = localToday;
 pickupDate.addEventListener("change", () => {
   returnDate.min = pickupDate.value || localToday;
 
-  if (
-    returnDate.value &&
-    returnDate.value < pickupDate.value
-  ) {
+  if (returnDate.value && returnDate.value < pickupDate.value) {
     returnDate.value = "";
   }
 });
 
-// GOOGLE SPREADSHEET - E PANDRYSHUAR
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbyfPceBfaDdvYYl7vBFscYDm082oaZR5t08AmQ4GJ5CCGkaurcy73uqrB1WnPaEdeP3Ag/exec";
+function summary() {
+  const car = cars.find(c => c.id === selectedCar.value);
 
-function showWhatsAppFallback(reservation, reason) {
-  message.textContent =
-    `${reason} Kërkesa nuk u regjistrua në sistem. Mund ta dërgosh me WhatsApp: `;
+  const start =
+    pickupDate.value && pickupTime.value
+      ? new Date(`${pickupDate.value}T${pickupTime.value}`)
+      : null;
 
-  const carName =
-    cars.find((car) => car.id === reservation.car)?.name || reservation.car;
-  const requestText = [
-    "Përshëndetje, dua të bëj një kërkesë rezervimi.",
-    `Emri: ${reservation.name}`,
-    `Telefoni: ${reservation.phone}`,
-    `Makina: ${carName}`,
-    `Marrja: ${reservation.pickup}`,
-    `Kthimi: ${reservation.returnDate}`,
-    reservation.notes ? `Shënime: ${reservation.notes}` : ""
-  ].filter(Boolean).join("\n");
+  const finish =
+    returnDate.value && returnTime.value
+      ? new Date(`${returnDate.value}T${returnTime.value}`)
+      : null;
 
-  const link = document.createElement("a");
-  link.href =
-    `https://wa.me/355686636483?text=${encodeURIComponent(requestText)}`;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.className = "contact-btn whatsapp-btn";
-  link.textContent = "Dërgo kërkesën në WhatsApp";
-  message.appendChild(link);
+  const days =
+    start && finish && finish > start
+      ? Math.ceil((finish - start) / 86400000)
+      : 0;
+
+  const rent = days * (car?.price || 0);
+
+  const delivery = deliveryLocation.value
+    ? deliveryPrices[deliveryLocation.value]
+    : 0;
+
+  document.getElementById("summaryCar").textContent =
+    car?.name || "-";
+
+  document.getElementById("summaryDays").textContent = days;
+
+  document.getElementById("summaryRental").textContent =
+    money(rent);
+
+  document.getElementById("summaryDelivery").textContent =
+    money(delivery);
+
+  document.getElementById("summaryTotal").textContent =
+    money(rent + delivery);
+
+  document.getElementById("deliveryPrice").textContent =
+    deliveryLocation.value
+      ? `Transporti: ${money(delivery)}`
+      : "Zgjidh vendin për të parë çmimin.";
+
+  return {
+    days,
+    rent,
+    delivery,
+    total: rent + delivery
+  };
 }
 
-bookingForm.addEventListener("submit", async (event) => {
+[
+  selectedCar,
+  pickupDate,
+  returnDate,
+  pickupTime,
+  returnTime,
+  deliveryLocation
+].forEach(element => {
+  element.addEventListener("change", summary);
+  element.addEventListener("input", summary);
+});
+
+bookingForm.addEventListener("submit", async event => {
   event.preventDefault();
 
-  if (!selectedCar.value) {
-    message.textContent = "Zgjidh një makinë.";
-    return;
-  }
+  const totals = summary();
 
-  if (!pickupDate.value || !returnDate.value) {
-    message.textContent = "Zgjidh datën e marrjes dhe të kthimit.";
-    return;
-  }
-
-  if (returnDate.value <= pickupDate.value) {
+  if (
+    !totals.days ||
+    !selectedCar.value ||
+    !deliveryLocation.value
+  ) {
     message.textContent =
-      "Data e kthimit duhet të jetë pas datës së marrjes.";
+      "Kontrollo makinën, vendin, datat dhe orët.";
     return;
   }
 
-  const nameInput = document.getElementById("customerName");
-  const phoneInput = document.getElementById("customerPhone");
+  const car = cars.find(c => c.id === selectedCar.value);
 
   const reservation = {
-    car: cars.find(c => c.id === selectedCar.value)?.name || selectedCar.value,
-    name: nameInput.value.trim(),
-    phone: phoneInput.value.trim(),
+    car: car.name,
+    name: document.getElementById("customerName").value.trim(),
+    phone: document.getElementById("customerPhone").value.trim(),
     pickup: pickupDate.value,
     returnDate: returnDate.value,
+    pickupTime: pickupTime.value,
+    returnTime: returnTime.value,
+    deliveryLocation: deliveryLocation.value,
     notes: document.getElementById("notes").value.trim()
-      deliveryLocation: document.getElementById("deliveryLocation").value,
-deliveryPrice: Number(document.getElementById("deliveryPrice").value),
-    pickupTime: document.getElementById("pickupTime").value,
-returnTime: document.getElementById("returnTime").value,
   };
 
+  const button = bookingForm.querySelector(
+    'button[type="submit"]'
+  );
+
+  button.disabled = true;
   message.textContent = "Duke dërguar rezervimin...";
 
   try {
@@ -275,282 +323,133 @@ returnTime: document.getElementById("returnTime").value,
       body: JSON.stringify(reservation)
     });
 
-    const responseText = await response.text();
-    let data;
-
-    try {
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error("Booking endpoint returned invalid JSON.", {
-        status: response.status,
-        contentType: response.headers.get("content-type"),
-        error: parseError
-      });
-      if (response.status === 401) {
-        showWhatsAppFallback(
-          reservation,
-          "Serveri i rezervimeve refuzoi qasjen (HTTP 401)."
-        );
-        return;
-      }
-      message.textContent =
-        `Serveri i rezervimeve ktheu përgjigje të pavlefshme (HTTP ${response.status}).`;
-      return;
-    }
-
     if (!response.ok) {
-      console.error("Booking request failed.", {
-        status: response.status,
-        message: data && typeof data.message === "string"
-          ? data.message
-          : undefined
-      });
-      if (response.status === 401) {
-        showWhatsAppFallback(
-          reservation,
-          "Serveri i rezervimeve refuzoi qasjen (HTTP 401)."
-        );
-        return;
-      }
-      message.textContent =
-        data && typeof data.message === "string" && data.message
-          ? data.message
-          : `Serveri nuk e pranoi kërkesën (HTTP ${response.status}).`;
-      return;
+      throw new Error("Gabim gjatë komunikimit me serverin.");
     }
 
-    if (data && data.success === true) {
+    const data = await response.json();
+
+    if (data.success) {
       message.textContent =
-        `Rezervimi u regjistrua me sukses! ID: ${data.id}`;
+        `Rezervimi u regjistrua! ID: ${data.id}. ` +
+        `Totali: ${money(data.total)}. Ruaje ID-në.`;
 
       bookingForm.reset();
-
-      pickupDate.min = localToday;
       returnDate.min = localToday;
+      summary();
     } else {
       message.textContent =
-        data && typeof data.message === "string" && data.message
-          ? data.message
-          : "Serveri nuk e regjistroi rezervimin. Provo përsëri ose na kontakto.";
+        data.message || "Rezervimi nuk u krye.";
+    }
+  } catch (error) {
+    message.textContent =
+      "Gabim gjatë dërgimit. Kontrollo rezervimin para se ta provosh përsëri.";
+  } finally {
+    button.disabled = false;
+  }
+});
+
+const checkBookingForm =
+  document.getElementById("checkBookingForm");
+
+const bookingResult =
+  document.getElementById("bookingResult");
+
+checkBookingForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const id = document.getElementById("bookingId").value.trim();
+  const phone = document.getElementById("bookingPhone").value.trim();
+
+  bookingResult.textContent = "Duke kontrolluar...";
+
+  try {
+    const url =
+      API_URL +
+      "?lookup=reservation" +
+      "&id=" + encodeURIComponent(id) +
+      "&phone=" + encodeURIComponent(phone);
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Gabim gjatë komunikimit.");
     }
 
+    const data = await response.json();
+
+    if (!data.success) {
+      const errorBox = document.createElement("div");
+      errorBox.className = "booking-error";
+      errorBox.textContent =
+        data.message || "Rezervimi nuk u gjet.";
+
+      bookingResult.replaceChildren(errorBox);
+      return;
+    }
+
+    const reservation = data.reservation;
+
+    const statusNames = {
+      PENDING: "🟡 Në pritje",
+      CONFIRMED: "✅ Konfirmuar",
+      CANCELLED: "❌ Anuluar"
+    };
+
+    const card = document.createElement("div");
+    card.className = "reservation-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Rezervimi juaj";
+    card.appendChild(heading);
+
+    const fields = [
+      ["ID", reservation.id],
+      ["Makina", reservation.car],
+      ["Data e marrjes", reservation.pickup],
+      ["Ora e marrjes", reservation.pickupTime],
+      ["Data e kthimit", reservation.returnDate],
+      ["Ora e kthimit", reservation.returnTime],
+      ["Vendi", reservation.deliveryLocation],
+      [
+        "Totali",
+        reservation.total != null
+          ? money(reservation.total)
+          : "-"
+      ],
+      [
+        "Statusi",
+        statusNames[reservation.status] ||
+        reservation.status ||
+        "-"
+      ]
+    ];
+
+    fields.forEach(([label, value]) => {
+      const p = document.createElement("p");
+      const strong = document.createElement("strong");
+
+      strong.textContent = `${label}: `;
+
+      p.append(
+        strong,
+        document.createTextNode(String(value ?? "-"))
+      );
+
+      card.appendChild(p);
+    });
+
+    bookingResult.replaceChildren(card);
+
   } catch (error) {
-    console.error(error);
+    const errorBox = document.createElement("div");
+    errorBox.className = "booking-error";
+    errorBox.textContent =
+      "Ndodhi një gabim gjatë kontrollit të rezervimit.";
 
-    const reason = error instanceof Error ? error.message : String(error);
-    const localFileHint = window.location.protocol === "file:"
-      ? " Faqja është hapur si skedar lokal (file://), dhe shfletuesi mund ta bllokojë lidhjen."
-      : "";
-
-    message.textContent =
-      `Nuk u lidhëm dot me serverin e rezervimeve.${localFileHint} Detaji teknik: ${reason}`;
+    bookingResult.replaceChildren(errorBox);
   }
 });
 
 document.getElementById("year").textContent =
   new Date().getFullYear();
-
-// Instagram
-document.getElementById("instagramLink").href =
-  "https://www.instagram.com/luani.rent/";
-
-// KONTROLLI I REZERVIMEVE - I PANDRYSHUAR
-const checkBookingForm = document.getElementById("checkBookingForm");
-const bookingResult = document.getElementById("bookingResult");
-
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbwtKcXok0e2rK2Q4QAtY5h74cFQ0IjT4F3zQF-rLBykP5Nh2ispX3izQH8Lvv42Nv-Bug/exec";
-
-if (checkBookingForm) {
-  checkBookingForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    const id = document
-      .getElementById("bookingId")
-      .value
-      .trim();
-
-    const phone = document
-      .getElementById("bookingPhone")
-      .value
-      .trim();
-
-    bookingResult.innerHTML = "<p>Duke kontrolluar...</p>";
-
-    try {
-      const url =
-        WEB_APP_URL +
-        "?lookup=reservation" +
-        "&id=" + encodeURIComponent(id) +
-        "&phone=" + encodeURIComponent(phone);
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (!data.success) {
-        bookingResult.innerHTML = `
-          <div class="booking-error">
-            ❌ ${data.message}
-          </div>
-        `;
-        return;
-      }
-
-      const reservation = data.reservation;
-
-      let statusText = reservation.status;
-
-      if (reservation.status === "CONFIRMED") {
-        statusText = "✅ CONFIRMED";
-      } else if (reservation.status === "PENDING") {
-        statusText = "🟡 PENDING";
-      } else if (reservation.status === "CANCELLED") {
-        statusText = "❌ CANCELLED";
-      }
-
-      bookingResult.innerHTML = `
-        <div class="reservation-card">
-
-          <h3>Rezervimi juaj</h3>
-
-          <p>
-            <strong>ID:</strong>
-            ${reservation.id}
-          </p>
-
-          <p>
-            <strong>Makina:</strong>
-            ${reservation.car}
-          </p>
-
-          <p>
-            <strong>Data e marrjes:</strong>
-            ${reservation.pickup}
-          </p>
-
-          <p>
-            <strong>Data e kthimit:</strong>
-            ${reservation.returnDate}
-          </p>
-
-          <p>
-            <strong>Statusi:</strong>
-            ${statusText}
-          </p>
-
-        </div>
-      `;
-
-    } catch (error) {
-      bookingResult.innerHTML = `
-        <div class="booking-error">
-          ❌ Ndodhi një gabim gjatë kontrollit të rezervimit.
-        </div>
-      `;
-    }
-  });
-}
-const deliveryLocations = {
-  "Durrës": null,
-  "Tiranë": null,
-  "Aeroporti i Tiranës (Rinas)": null,
-  "Kavajë": null,
-  "Krujë": null,
-  "Lezhë": null,
-  "Shkodër": null,
-  "Kukës": null,
-  "Peshkopi": null,
-  "Elbasan": null,
-  "Fier": null,
-  "Lushnjë": null,
-  "Berat": null,
-  "Vlorë": null,
-  "Sarandë": null,
-  "Gjirokastër": null,
-  "Tepelenë": null,
-  "Përmet": null,
-  "Korçë": null,
-  "Pogradec": null
-};
-const deliverySelect = document.getElementById("deliveryLocation");
-
-const money = amount =>
-  `${amount.toLocaleString("en-US")} ALL`;
-
-Object.keys(deliveryLocations).forEach(location => {
-  const option = document.createElement("option");
-
-  option.value = location;
-  option.textContent = location;
-
-  deliverySelect.appendChild(option);
-});
-
-function calculateBookingTotal() {
-  const carId = document.getElementById("selectedCar").value;
-  const pickup = document.getElementById("pickupDate").value;
-  const returnDate = document.getElementById("returnDate").value;
-  const location = deliverySelect.value;
-
-  const car = cars.find(item => item.id === carId);
-
-  let days = 0;
-  let rentalPrice = 0;
-
-  if (pickup && returnDate) {
-    const start = new Date(pickup + "T00:00:00");
-    const end = new Date(returnDate + "T00:00:00");
-
-    days = Math.max(
-      0,
-      Math.round((end - start) / 86400000)
-    );
-  }
-
-  if (car && days > 0) {
-    rentalPrice = car.price * days;
-  }
-
-  const deliveryPrice = location
-    ? deliveryLocations[location]
-    : null;
-
-  document.getElementById("summaryCar").textContent =
-    car ? car.name : "-";
-
-  document.getElementById("summaryDays").textContent = days;
-
-  document.getElementById("summaryRental").textContent =
-    money(rentalPrice);
-
-  document.getElementById("summaryDelivery").textContent =
-    deliveryPrice === null
-      ? "Për konfirmim"
-      : money(deliveryPrice);
-
-  document.getElementById("deliveryPrice").textContent =
-    !location
-      ? "Zgjidh një vend për të parë çmimin."
-      : deliveryPrice === null
-        ? "Çmimi i dorëzimit konfirmohet nga kompania."
-        : `Çmimi i dorëzimit: ${money(deliveryPrice)}`;
-
-  document.getElementById("summaryTotal").textContent =
-    car && days > 0 && deliveryPrice !== null
-      ? money(rentalPrice + deliveryPrice)
-      : "Për konfirmim";
-}
-
-[
-  "selectedCar",
-  "pickupDate",
-  "returnDate",
-  "deliveryLocation"
-].forEach(id => {
-  document.getElementById(id).addEventListener(
-    "change",
-    calculateBookingTotal
-  );
-});
-
-calculateBookingTotal();
