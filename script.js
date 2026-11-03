@@ -76,8 +76,7 @@ const cars = [
 ];
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbwtKcXok0e2rK2Q4QAtY5h74cFQ0IjT4F3zQF-rLBykP5Nh2ispX3izQH8Lvv42Nv-Bug/exec";
-
+"https://script.google.com/macros/s/AKfycbyfPceBfaDdvYYl7vBFscYDm082oaZR5t08AmQ4GJ5CCGkaurcy73uqrB1WnPaEdeP3Ag/exec";
 const deliveryPrices = {
   "Durrës": 0,
   "Tiranë": 2500,
