@@ -64,13 +64,13 @@ const cars = [
     name: "Golf 6 GTI",
     price: 3000,
     images: [
-      "images/car4 (1).jpeg",
-      "images/car4 (2).jpeg",
-      "images/car4 (3).jpeg",
-      "images/car4 (4).jpeg",
-      "images/car4 (5).jpeg",
-      "images/car4 (6).jpeg",
-      "images/car4 (7).jpeg"
+      "images/golf6gti (1).jpeg",
+      "images/golf6gti (2).jpeg",
+      "images/golf6gti (3).jpeg",
+      "images/golf6gti (4).jpeg",
+      "images/golf6gti (5).jpeg",
+      "images/golf6gti (6).jpeg",
+      "images/golf6gti (7).jpeg"
     ],
     details: "Golf 6 GTI"
   }
