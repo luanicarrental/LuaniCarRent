@@ -69,8 +69,7 @@ const cars = [
       "images/golf6gti (3).jpeg",
       "images/golf6gti (4).jpeg",
       "images/golf6gti (5).jpeg",
-      "images/golf6gti (6).jpeg",
-      "images/golf6gti (7).jpeg"
+      "images/golf6gti (6).jpeg"
     ],
     details: "Golf 6 GTI"
   }
