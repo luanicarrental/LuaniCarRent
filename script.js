@@ -59,21 +59,21 @@ const cars = [
     ],
     details: "2.0 nafte / Kambio Automatike / Viti-2013"
   },
-    {
+  {
     id: "car5",
     name: "Golf 6 GTI",
-    price: 3500,
+    price: 3000,
     images: [
-      "images/car4 (2).jpeg",
       "images/car4 (1).jpeg",
+      "images/car4 (2).jpeg",
       "images/car4 (3).jpeg",
       "images/car4 (4).jpeg",
       "images/car4 (5).jpeg",
-      "images/car4 (7).jpeg",
-      "images/car4 (6).jpeg"
+      "images/car4 (6).jpeg",
+      "images/car4 (7).jpeg"
     ],
-    details: "2.0 Benzine + Gaz / Kambio Automatike / Viti-2013"
-  },
+    details: "Golf 6 GTI"
+  }
 ];
 
 const carGrid = document.getElementById("carGrid");
@@ -256,7 +256,6 @@ function summary() {
       : 0;
 
   const rent = days * (car?.price || 0);
-
   const delivery = 0;
 
   document.getElementById("summaryCar").textContent =
