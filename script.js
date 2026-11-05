@@ -58,7 +58,22 @@ const cars = [
       "images/car3 (6).jpeg"
     ],
     details: "2.0 nafte / Kambio Automatike / Viti-2013"
-  }
+  },
+    {
+    id: "car5",
+    name: "Golf 6 GTI",
+    price: 3500,
+    images: [
+      "images/car4 (2).jpeg",
+      "images/car4 (1).jpeg",
+      "images/car4 (3).jpeg",
+      "images/car4 (4).jpeg",
+      "images/car4 (5).jpeg",
+      "images/car4 (7).jpeg",
+      "images/car4 (6).jpeg"
+    ],
+    details: "2.0 Benzine + Gaz / Kambio Automatike / Viti-2013"
+  },
 ];
 
 const carGrid = document.getElementById("carGrid");
